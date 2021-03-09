@@ -17,6 +17,9 @@ repositories {
 	maven { url = uri("https://repo.spring.io/snapshot") }
 }
 
+val logbackVersion = "1.2.3"
+val logstashVersion = "6.4"
+
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
 	implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
@@ -26,6 +29,10 @@ dependencies {
 
 	implementation("io.r2dbc:r2dbc-mssql")
 	// runtimeOnly("dev.miku:r2dbc-mysql")
+
+	// logging
+	implementation("ch.qos.logback:logback-classic:$logbackVersion")
+	implementation("net.logstash.logback:logstash-logback-encoder:$logstashVersion")
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("io.projectreactor:reactor-test")

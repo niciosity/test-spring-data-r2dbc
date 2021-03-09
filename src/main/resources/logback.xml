@@ -1,0 +1,61 @@
+<configuration>
+
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <charset>UTF-8</charset>
+      <pattern>%d{"yyyy-MM-dd HH:mm:ss,SSS"} [%thread] %-5level %logger{0} - %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>log/test-r2dbc-mssql.log.jsonl</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+      <!-- rollover daily -->
+      <fileNamePattern>log/archived/test-r2dbc-mssql.%d{yyyy-MM-dd}.%i.log.jsonl.gz</fileNamePattern>
+      <!-- each file should be at most 100MB, keep 60 days worth of history, but at most 20GB -->
+      <maxFileSize>100MB</maxFileSize>
+      <maxHistory>60</maxHistory>
+      <totalSizeCap>20GB</totalSizeCap>
+    </rollingPolicy>
+    <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+      <customFields>{"application":"test-r2dbc-mssql"}</customFields>
+    </encoder>
+  </appender>
+
+  <appender name="FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>log/test-r2dbc-mssql-error.log.jsonl</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+      <!-- rollover daily -->
+      <fileNamePattern>log/archived/test-r2dbc-mssql-error.%d{yyyy-MM-dd}.%i.log.jsonl.gz</fileNamePattern>
+      <!-- each file should be at most 100MB, keep 60 days worth of history, but at most 20GB -->
+      <maxFileSize>100MB</maxFileSize>
+      <maxHistory>60</maxHistory>
+      <totalSizeCap>20GB</totalSizeCap>
+    </rollingPolicy>
+    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+      <level>ERROR</level>
+    </filter>
+    <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+      <customFields>{"application":"test-r2dbc-mssql"}</customFields>
+    </encoder>
+  </appender>
+
+  <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+    <appender-ref ref="STDOUT"/>
+  </appender>
+
+  <appender name="ASYNC_FILE" class="ch.qos.logback.classic.AsyncAppender">
+    <appender-ref ref="FILE"/>
+  </appender>
+
+  <appender name="ASYNC_FILE_ERROR" class="ch.qos.logback.classic.AsyncAppender">
+    <appender-ref ref="FILE_ERROR"/>
+  </appender>
+
+  <root level="DEBUG">
+    <appender-ref ref="ASYNC"/>
+    <appender-ref ref="ASYNC_FILE"/>
+    <appender-ref ref="ASYNC_FILE_ERROR"/>
+  </root>
+
+</configuration>
