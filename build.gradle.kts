@@ -27,8 +27,8 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
 
-	implementation("io.r2dbc:r2dbc-mssql")
-	// runtimeOnly("dev.miku:r2dbc-mysql")
+	runtimeOnly("io.r2dbc:r2dbc-mssql")
+	runtimeOnly("dev.miku:r2dbc-mysql")
 
 	// logging
 	implementation("ch.qos.logback:logback-classic:$logbackVersion")
